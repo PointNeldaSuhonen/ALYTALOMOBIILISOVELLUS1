@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <title>@ViewBag.Title - Neldan älytalo-sovellus</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+
+        body, h1, p {
+            font-family: Arial;
+            color: black;
+        }
+
+        .tausta {
+            background-image: url("../../Properties/beachhouse.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            /*background-position:*/ 
+        }
+        .navbar-header {
+            color:white;
+        }
+        .navbar-nav {
+            color:white;
+        }
+    </style>
+</head>
+
+<body class="tausta">
+    <nav class="navbar-expand-md bg-dark navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Neldan älytalo-sovellus", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Etusivu", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Valaistus", "Index", "Valot")</li>
+                    <li>@Html.ActionLink("Sauna", "Index", "Sauna")</li>
+                    <li>@Html.ActionLink("Lämpötila", "Index", "Lampotila")</li>
+                    <li>@Html.ActionLink("Lisää huone/sauna", "Index", "Säätö")</li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <div class="container body-content">
+        @RenderBody()
+
+    </div>
+</body>
+</html>

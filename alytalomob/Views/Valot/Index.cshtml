@@ -1,0 +1,173 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+    h1 {
+        font-family: Arial;
+        font-size: 40px;
+        color: black;
+    }
+
+    .glyphicon-off {
+        font-size: 40PX;
+        color: darkred;
+        text-shadow: 2px 2px 4px #000000;
+        margin: 10px;
+    }
+
+        .glyphicon-off:hover {
+            background-color: white;
+            color: black;
+        }
+
+    .fa-circle {
+        font-size: 40px;
+        color: gold;
+        text-shadow: 3px 3px 4px #000000;
+        text-align: match-parent;
+        margin-top: 10px;
+    }
+
+
+    .table {
+        margin-top: 0px;
+        background-color: white;
+        text-align: center;
+        box-shadow: 2px 2px 8px #000000;
+        color: black;
+        padding: 40px;
+        font-style: inherit;
+        border-radius: 20px;
+        border-color: white;
+        /*border-style: solid;*/
+        border-width: 10px;
+    }
+
+    th, td {
+        text-align: center;
+        padding: 40px;
+        padding-top: 20px;
+        width: 10%;
+    }
+</style>
+
+@section scripts {
+
+
+    <script type="text/javascript">
+
+
+        function päivitäListaus() {
+            $.getJSON("/valot/getlist", null, function (json) {
+                var Valot = JSON.parse(json);
+
+                var html = "";
+                for (var index = 0; index < Valot.length; index++) {
+                    html += "<tr>" +
+                        "<td>" + Valot[index].ValoID + "</td>" +
+                        "<td>" + Valot[index].Huone + "</td>" +
+                        "<td><a href='#'><span class='glyphicon glyphicon-off'></span></a></td>" +
+                        "<td><a href='#'><span class='fa fa-circle' style=color:#ffffe6></span></a></td>" +
+                        "<td><a href='#'><span class='fa fa-circle' style=color:#ffff99></span></a></td>" +
+                        "<td><a href='#'><span class='fa fa-circle' style=color:#ffff00></span></a></td>" +
+                        "<td class='td'>" + Valot[index].Tila + "</td>" +
+                        "</tr>\r\n";
+                }
+
+                $("#ValotList tbody").html(html);
+
+                //tästä lisätty Valot POIS
+                $(".glyphicon-off").click(function () {
+                    // etsitään asiakkaan tiedot klikatulta riviltä
+
+                    var ValoID = $(this).parent().parent().prev().prev().text();
+                    $.getJSON("/valot/valotoff/" + ValoID, null, function (status) {
+                        if (status == true) {
+                            päivitäListaus();
+                        }
+                        else {
+                            alert("Poistaminen ei onnistunut, yritä uudelleen!");
+                        }
+                    });
+                });
+                //tästä lisätty Valot 33
+                $(".fa-circle").click(function () {
+                    // etsitään asiakkaan tiedot klikatulta riviltä
+
+                    var ValoID = $(this).parent().parent().prev().prev().prev().text();
+                    $.getJSON("/valot/Valot33/" + ValoID, null, function (status) {
+                        if (status == true) {
+                            päivitäListaus();
+                        }
+
+                    });
+                });
+
+                $(".fa-circle").click(function () {
+                    // etsitään asiakkaan tiedot klikatulta riviltä
+
+                    var ValoID = $(this).parent().parent().prev().prev().prev().prev().text();
+                    $.getJSON("/valot/Valot66/" + ValoID, null, function (status) {
+                        if (status == true) {
+                            päivitäListaus();
+                        }
+
+                    });
+                });
+
+                $(".fa-circle").click(function () {
+                    // etsitään asiakkaan tiedot klikatulta riviltä
+
+                    var ValoID = $(this).parent().parent().prev().prev().prev().prev().prev().text();
+                    $.getJSON("/valot/Valot100/" + ValoID, null, function (status) {
+                        if (status == true) {
+                            päivitäListaus();
+
+                        }
+
+                    });
+                });
+            });
+        }
+
+        $(function () {
+            päivitäListaus();
+
+        });
+
+    </script>
+}
+
+<header class="w3-container w3-center w3-padding-32">
+    <h1 class="text-center">Huoneen valaistus</h1>
+</header>
+
+
+<table class="table" id="ValotList">
+    <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Huone</th>
+            <th>Valot pois</th>
+            <th>Himmeä</th>
+            <th>Tavallinen</th>
+            <th>Kirkas</th>
+            <th>Tila</th>
+        </tr>
+    </thead>
+    <tbody style="padding:40px;"></tbody>
+</table>
+
+
+

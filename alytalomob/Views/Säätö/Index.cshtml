@@ -1,0 +1,316 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+    .table {
+        table-layout: auto;
+        width: 180px;
+        background-color: white;
+        text-align: center;
+        color: black;
+        padding: 40px 400px;
+        font-style: inherit;
+        border-radius: 20px;
+    }
+
+    .kokotable {
+        table-layout: auto;
+        width: 480px;
+        align-items: center;
+        text-align: center;
+    }
+
+    th, td {
+        text-align: center;
+        padding: 40px;
+        padding-top: 20px;
+        width: 10%;
+    }
+
+    .p-0 {
+        font-size: 16px;
+        color: black;
+        margin-left: 40px;
+    }
+
+    .caption {
+        display: table-caption;
+        text-align: center;
+        color: red;
+        font-size: 20px;
+        margin-left: 40px;
+    }
+
+    .input {
+        padding: 5px;
+        text-align: center;
+        border-radius: 4px;
+        outline-color: black;
+        width: 180px;
+    }
+
+    .label {
+        margin-top: 10px;
+        
+    }
+
+    .button {
+        margin-left: 0px;
+        padding: 5px;
+        margin-right: 2px;
+        border-radius: 50px;
+        color: black;
+        background-color: white;
+    }
+        .button:hover {
+            background-color: gray;
+            color: white;
+        }
+</style>
+<html lang="fi">
+<body>
+    @section scripts {
+
+        <script type="text/javascript">
+
+
+            function päivitäListaus() {
+                $.getJSON("/säätö/getsauna", null, function (json) {
+                    var Säätö = JSON.parse(json);
+
+                    var html = "";
+                    for (var index = 0; index < Säätö.length; index++) {
+                        html += "<tr>" +
+                            "<td>" + Säätö[index].SaunaID + "</td>" +
+                            "<td>" + Säätö[index].Sauna_Nimi + "</td>" +
+                            "</tr>\r\n";
+                    }
+                    $("#Sauna2List tbody").html(html);
+
+                    //tästä lisätty
+                });
+            }
+
+            // sivun alustaminen
+            $(function () {
+                päivitäListaus();
+
+                $("#SaveButton").click(function () {
+                    // luetaan käyttäjän syöttämät kentät
+                    var details = { Sauna_Nimi: $("#Sauna_Nimi").val(), };
+
+
+                    $.post("/säätö/newsauna/", details, function (status) {
+                        if (status == true) {
+                            alert("Uusi sauna" + Sauna_Nimi + "lisätty.");
+                            päivitäListaus();
+                        }
+                        else {
+                            alert("Tallennus ei onnistunut, yritä uudelleen!");
+                        }
+                    });
+
+                });
+
+                console.log("Alustus valmis!");
+
+            });
+            // sivun alustaminen
+
+
+            // sivun alustaminen
+            $(function () {
+                päivitäListaus();
+
+                $("#PoistaButton").click(function () {
+                    // luetaan käyttäjän syöttämät kentät
+                    var details = { SaunaID: $("#Sauna_ID").val(), };
+
+                    $.post("/säätö/Delete/", details, function (status) {
+                        if (status == true) {
+                            alert("Sauna poistettu");
+                            päivitäListaus()
+                        }
+                        else {
+                            alert("Tallennus ei onnistunut, yritä uudelleen!");
+                        }
+                    });
+
+                });
+
+                console.log("Alustus valmis!");
+
+            });
+            // sivun alustaminen
+
+            $(function () {
+                päivitäListaus();
+
+            });
+
+            function päivitäValot() {
+                $.getJSON("/säätö/getvalot", null, function (json) {
+                    var Säätö = JSON.parse(json);
+
+                    var html = "";
+                    for (var index = 0; index < Säätö.length; index++) {
+                        html += "<tr>" +
+                            "<td>" + Säätö[index].ValoID + "</td>" +
+                            "<td>" + Säätö[index].Huone + "</td>" +
+                            "</tr>\r\n";
+                    }
+                    $("#Valot2List tbody").html(html);
+
+                    //tästä lisätty
+                });
+            }
+
+            // sivun alustaminen
+            $(function () {
+                päivitäValot();
+
+                $("#ValotSaveButton").click(function () {
+                    // luetaan käyttäjän syöttämät kentät
+                    var details = { Huone: $("#Huone").val(), };
+
+
+                    $.post("/säätö/newvalot/", details, function (status) {
+                        if (status == true) {
+                            alert("Uusi huone" + Huone + "lisätty.");
+                            päivitäValot();
+                        }
+                        else {
+                            alert("Tallennus ei onnistunut, yritä uudelleen!");
+                        }
+                    });
+                });
+                console.log("Alustus valmis!");
+            });
+
+            // sivun alustaminen
+            $(function () {
+                päivitäValot();
+
+                $("#PoistaValotButton").click(function () {
+                    // luetaan käyttäjän syöttämät kentät
+                    var details = { ValoID: $("#Valo_ID").val(), };
+
+                    $.post("/säätö/DeleteValot/", details, function (status) {
+                        if (status == true) {
+                            alert("Huone poistettu");
+                            päivitäValot();
+                        }
+                        else {
+                            alert("Tallennus ei onnistunut, yritä uudelleen!");
+                        }
+                    });
+
+                });
+
+                console.log("Alustus valmis!");
+
+            });
+            // sivun alustaminen
+
+            $(function () {
+                päivitäValot();
+
+            });
+
+        </script>
+
+    }
+
+    <div class="w3-content" style="max-width:1400px; max-height:800px;">
+        <h3 style="text-align:center;">Saunat</h3>
+        <div class="row">
+            <!-- Sauna taulu -->
+            <div class="col-sm-2"></div>
+
+            <table id="Sauna2List" class="table kokotable col-sm-2">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Nimi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-6"><label class="p-0" for="Saunan Nimi">Lisää sauna:</label></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-5"><input type="text" class="input" id="Sauna_Nimi" placeholder="Anna saunalle nimi"></div>
+                <div class="col-sm-1"><button type="button" class="button" id="SaveButton">Lisää</button></div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6"><label class="p-0" for="Saunan numero">Poista sauna:</label></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5"><input type="text" class="input" id="Sauna_ID" placeholder="Anna saunan numero"></div>
+                <div class="col-sm-1"><button type="button" class="button" id="PoistaButton">Poista</button></div>
+            </div>
+        </div>
+        <br />
+
+        <!--Valottaulu-->
+        <h3 style="text-align:center; margin-top:100px;">Huoneet</h3>
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <table id="Valot2List" class="table kokotable">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Nimi</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-6"><label class="p-0" for="Saunan Nimi">Lisää huone:</label></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-5"><input type="text" class="input" id="Huone" placeholder="Anna huoneelle nimi"></div>
+                <div class="col-sm-1"><button type="button" class="button" id="ValotSaveButton">Lisää</button></div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6"><label class="p-0" for="Saunan numero">Poista huone:</label></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5"><input type="text" class="input" id="Valo_ID" placeholder="Anna huoneen numero"></div>
+                <div class="col-sm-1"><button type="button" class="button" id="PoistaValotButton">Poista</button></div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>
+
+

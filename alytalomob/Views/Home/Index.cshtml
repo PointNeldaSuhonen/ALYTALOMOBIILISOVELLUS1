@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+    .li {
+        font-family: Arial;
+        font-size: 30px;
+        color: white;
+    }
+    .p {
+        font-family: Arial;
+        color: black;
+    }
+</style>
+<div class="container text-left" style="background-color:rgba(250,250,250,0.5; margin-top:100px; margin-bottom:200px;">
+    <h1>Neldan älytalo</h1>
+    <p class="lead">Muokkaa älytalon toiminnallisuuksia</p>
+    <ul>
+        <li class="li">@Html.ActionLink("Lisää huone tai sauna", "Index", "Säätö")</li>
+        <li class="li">@Html.ActionLink("Huoneiden valaistus", "Index", "Valot")</li>
+        <li class="li">@Html.ActionLink("Huoneiden lämpötila", "Index", "LampoTila")</li>
+        <li class="li">@Html.ActionLink("Sauna", "Index", "Sauna")</li>
+    </ul>
+</div>
+

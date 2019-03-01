@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<style>
+    h1 {
+        font-family: Arial;
+        font-size: 40px;
+        color: black;
+    }
+
+    .glyphicon-off {
+        font-size: 40PX;
+        color: rgb(91,89,114);
+        text-shadow: 2px 2px 4px #000000;
+        margin: 10px;
+    }
+
+    .fa-circle {
+        font-size: 35px;
+        color: rgb(184,179,214);
+        text-shadow: 2px 2px 4px #000000;
+        text-align: match-parent;
+        margin-top: 10px;
+    }
+
+    .glyphicon-plus-sign {
+        font-size: 32px;
+        color: rgb(184,179,214);
+        text-shadow: 2px 2px 4px #000000;
+        text-align: match-parent;
+        margin-top: 10px;
+    }
+
+    .glyphicon-minus-sign {
+        font-size: 32px;
+        color: rgb(184,179,214);
+        text-shadow: 2px 2px 4px #000000;
+        text-align: match-parent;
+        margin-top: 10px;
+    }
+
+    .table {
+        /*margin-left: 50px;*/
+        margin-top: 0px;
+        background-color: white;
+        text-align: center;
+        box-shadow: 2px 2px 8px #000000;
+        color: black;
+        padding: 40px;
+        font-style: inherit;
+        border-radius: 20px;
+        border-color: white;
+        /*border-style: solid;*/
+        border-width: 10px;
+        /*width: 90%;*/
+    }
+
+    th, td {
+        margin-top: 15px;
+        text-align: center;
+        padding: 40px;
+        padding-top: 20px;
+        width: 10%;
+    }
+
+</style>
+
+
+<script type="text/javascript">
+
+
+    function päivitäListaus() {
+        $.getJSON("/huonelampo/getlist", null, function (json) {
+            var HuoneLampo = JSON.parse(json);
+
+            var html = "";
+            for (var index = 0; index < HuoneLampo.length; index++) {
+                html += "<tr>" +
+                    "<td>" + HuoneLampo[index].HuoneID + "</td>" +
+                    "<td>" + HuoneLampo[index].Huone_Nimi + "</td>" +
+                    "<td><a href='#'><span class='glyphicon glyphicon-off'></span></a></td>" +
+                    "<td><a href='#'><span class='fa fa-circle'></span></a></td>" +
+                    "<td><a href='#'><span class='glyphicon glyphicon-minus-sign'></span></a></td>" +
+                    "<td><a href='#'><span class='glyphicon glyphicon-plus-sign'></span></a></td>" +
+                    "<td class='td'>" + HuoneLampo[index].LampoNyt + "</td>" +
+                    "<td class='td'>" + HuoneLampo[index].Tila + "</td>" +
+                    "</tr>\r\n";
+            }
+
+            $("#HuoneLampoList tbody").html(html);
+
+            //tästä lisätty sauna POIS
+            $(".glyphicon-off").click(function () {
+                // etsitään asiakkaan tiedot klikatulta riviltä
+
+                var HuoneID = $(this).parent().parent().prev().prev().text();
+                $.getJSON("/huonelampo/Lampooff/" + HuoneID, null, function (status) {
+                    if (status == true) {
+                        päivitäListaus();
+                    }
+                    else {
+                        alert("Poistaminen ei onnistunut, yritä uudelleen!");
+                    }
+                });
+            });
+
+            //Sauna päälle
+            $(".fa fa-circle").click(function () {
+
+                var HuoneID = $(this).parent().parent().prev().prev().prev().text();
+                $.getJSON("/huonelampo/Lampoon/" + ID, null, function (status) {
+                    if (status == true) {
+                        päivitäListaus();
+                    }
+                    else {
+                        alert("Lämpötilaa ei voi asettaa alle 20 astetta");
+                    }
+                });
+            });
+
+            //Saunan lämpötilan laskeminen -5 astetta
+            $(".glyphicon-minus-sign").click(function () {
+                // etsitään asiakkaan tiedot klikatulta riviltä
+
+                var HuoneID = $(this).parent().parent().prev().prev().prev().prev().text();
+                $.getJSON("/huonelampo/LampoMiinus/" + HuoneID, null, function (status) {
+                    if (status == true) {
+                        päivitäListaus();
+                    }
+                    else {
+                        alert("Lämpötilaa ei voi asettaa yli 90 astetta");
+                    }
+                });
+            });
+
+            //Sauna lämpötilan nostaminen +5 astetta
+            $(".glyphicon-plus-sign").click(function () {
+                // etsitään asiakkaan tiedot klikatulta riviltä
+
+                var HuoneID = $(this).parent().parent().prev().prev().prev().prev().prev().text();
+                $.getJSON("/huonelampo/SaunaPlus/" + HuoneID, null, function (status) {
+                    if (status == true) {
+                        päivitäListaus();
+
+                    }
+                });
+            });
+        });
+    }
+
+    $(function () {
+        päivitäListaus();
+
+    });
+
+</script>
+
+
+<header class="w3-container w3-center w3-padding-32">
+    <h1 class="text-center">Huoneen lämmitys</h1>
+</header>
+
+
+<table class="table" id="SaunaList">
+    <thead>
+        <tr>
+            <th>Numero</th>
+            <th>Nimi</th>
+            <th>OFF</th>
+            <th>ON</th>
+            <th>Laske</th>
+            <th>Lisää</th>
+            <th>Lämpötila</th>
+            <th>Tila</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+
